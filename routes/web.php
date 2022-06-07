@@ -16,3 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+// 管理者以上
+Route::group(['middleware' => ['auth', 'can:master']], function () {
+    Route::resource('user', 'App\Http\Controllers\UserController');
+});
+// ホスト
+Route::group(['middleware' => ['auth', 'can:host']], function () {
+});
+// 一般ユーザー
+Route::group(['middleware' => ['auth', 'can:guest']], function () {
+});

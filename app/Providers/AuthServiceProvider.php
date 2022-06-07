@@ -25,6 +25,17 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // 管理者以上に許可
+        Gate::define('master', function ($user) {
+            return ($user->user_role_id == 1);
+        });
+        // ホスト以上に許可
+        Gate::define('host', function ($user) {
+            return ($user->user_role_id <= 2);
+        });
+        // ゲスト以上に許可
+        Gate::define('guest', function ($user) {
+            return ($user->user_role_id <= 3);
+        });
     }
 }
